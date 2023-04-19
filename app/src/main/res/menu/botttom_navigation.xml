@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--    <item android:id="@+id/nav_reports"-->
+    <!--        android:icon="@drawable/icons8_connect_50"-->
+    <!--        android:title="Reports"/>-->
+    <!--    <item android:id="@+id/nav_home" android:title=""/>-->
+    <!--    <item android:id="@+id/nav_employees"-->
+    <!--        android:icon="@drawable/icons8_myspace_50"-->
+    <!--        android:title="Entities"/>-->
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/icons8_home_filled_50"
+        android:title="Home" />
+    <item
+        android:id="@+id/nav_account"
+        android:icon="@drawable/icons8_account_filled_50"
+        android:title="Account" />
+</menu>

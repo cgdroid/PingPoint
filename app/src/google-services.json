@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "782946627892",
+    "project_id": "cgdroid-pingpoint-788cf",
+    "storage_bucket": "cgdroid-pingpoint-788cf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:782946627892:android:a8d5a2b03ef8237e133561",
+        "android_client_info": {
+          "package_name": "com.tmhnry.pingpoint"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "782946627892-pdcev2pvq0kahvvf7cgv4m521f3k4rf9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBS51glwGU38Y6ugI3PtGGMrwGMveAlIaA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "782946627892-pdcev2pvq0kahvvf7cgv4m521f3k4rf9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

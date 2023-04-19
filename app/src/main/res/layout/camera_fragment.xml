@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.tmhnry.pingpoint.CameraFragmentViewModel" />
+
+        <variable
+            name="vm"
+            type="com.tmhnry.pingpoint.CameraFragmentViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="com.google.learning.brain.mobile.transfer.android.MainActivity">
+
+        <TextureView
+            android:id="@+id/view_finder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/reset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@drawable/background_circular_button"
+            android:backgroundTint="@color/orange"
+            android:minHeight="0dp"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="10dp"
+            android:text="RESET"
+            android:textAllCaps="false"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/help_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            android:background="@drawable/help_background"
+            android:text="@string/help_button_title"
+            android:textColor="@color/dark_blue"
+            android:visibility="invisible"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <RadioGroup
+            android:id="@+id/mode_toggle_button_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:background="@drawable/tf_out_line"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <RadioButton
+                android:id="@+id/capture_mode_button"
+                style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="1dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginBottom="1dp"
+                android:layout_weight="1"
+                android:background="@drawable/toggle_widget_background"
+                android:button="@null"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/capture_mode_title"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+
+            <RadioButton
+                android:id="@+id/inference_mode_button"
+                style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="1dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginBottom="1dp"
+                android:layout_weight="1"
+                android:background="@drawable/toggle_widget_background"
+                android:button="@null"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="@string/inference_mode_title"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+
+        </RadioGroup>
+
+        <LinearLayout
+            style="@style/Toast"
+            android:visibility='@{vm.getSampleCollectionLongPressed}'
+            app:layout_constraintBottom_toTopOf="@+id/classes_bar"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/help_button">
+
+            <TextView
+                style="@style/BigButtonTitle"
+                android:text='@{String.format("%d samples collected", vm.numCollectedSamples)}'
+                android:textColor="#ddd" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/BigButton"
+            android:background="@drawable/btn_big_gray"
+            android:visibility='@{vm.captureMode &amp;&amp; vm.neededSamples > 0}'
+            app:layout_constraintBottom_toTopOf="@+id/classes_bar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                style="@style/BigButtonTitle"
+                android:textSize="14sp"
+                android:text="Collect"
+                android:textAllCaps="false"
+                android:fontFamily="@font/roboto_bold"
+                android:textColor="#ddd" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/BigButton"
+            android:id="@+id/train_start_button"
+            android:background="@drawable/btn_big_green"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="@{() -> vm.setTrainingState(CameraFragmentViewModel.TrainingState.STARTED)}"
+            android:visibility='@{vm.neededSamples == 0 &amp;&amp; vm.trainingState == CameraFragmentViewModel.TrainingState.NOT_STARTED}'
+            app:layout_constraintBottom_toTopOf="@+id/classes_bar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                style="@style/BigButtonTitle"
+                android:fontFamily="@font/roboto_bold"
+                android:text="@string/train_action"
+                android:textAllCaps="false"
+                android:textColor="#ddd"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/BigButton"
+            android:background="@drawable/btn_big_yellow"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="@{() -> vm.setTrainingState(CameraFragmentViewModel.TrainingState.PAUSED)}"
+            android:visibility='@{vm.trainingState == CameraFragmentViewModel.TrainingState.STARTED}'
+            app:layout_constraintBottom_toTopOf="@+id/classes_bar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                style="@style/BigButtonTitle"
+                android:fontFamily="@font/roboto_bold"
+                android:text="@string/pause_action"
+                android:textAllCaps="false"
+                android:textColor="#ddd"
+                android:textSize="14sp" />
+            <!--            <TextView-->
+            <!--                style="@style/BigButtonSubtitle"-->
+            <!--                android:text='@{String.format("Loss: %.3f", vm.lastLoss)}'-->
+            <!--                android:textColor="@color/black"-->
+            <!--                android:visibility="@{vm.lastLoss != null}" />-->
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/BigButton"
+            android:background="@drawable/btn_big_green"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="@{() -> vm.setTrainingState(CameraFragmentViewModel.TrainingState.STARTED)}"
+            android:visibility='@{vm.trainingState == CameraFragmentViewModel.TrainingState.PAUSED}'
+            app:layout_constraintBottom_toTopOf="@+id/classes_bar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                style="@style/BigButtonTitle"
+                android:fontFamily="@font/roboto_bold"
+                android:text="@string/resume_action"
+                android:textAllCaps="false"
+                android:textColor="#ddd"
+                android:textSize="14sp" />
+            <!--            <TextView-->
+            <!--                style="@style/BigButtonSubtitle"-->
+            <!--                android:text='@{String.format("Loss: %.3f", vm.lastLoss)}'-->
+            <!--                android:textColor="#ddd"-->
+            <!--                android:visibility="@{vm.lastLoss != null}" />-->
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/classes_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            app:layout_constraintBottom_toBottomOf="@+id/view_finder"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+
+            <LinearLayout
+                android:id="@+id/class_btn_1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".25"
+                android:clickable="@{vm.captureMode}"
+                android:enabled="@{vm.captureMode}"
+                android:orientation="vertical"
+                app:highlight='@{!vm.captureMode &amp;&amp; vm.firstChoice == "1"}'>
+
+                <!--                <ImageView-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_margin="8dp"-->
+                <!--                    android:src="@drawable/ic_label_triangle" />-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Identified" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:tag="subtitle"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    app:captureMode='@{vm.captureMode}'
+                    app:captureText='@{vm.numSamples["1"]}'
+                    app:categoryId="@{1}"
+                    app:inferenceText='@{vm.confidence["1"] * 100f}' />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/class_btn_2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".25"
+                android:clickable="@{vm.captureMode}"
+                android:enabled="@{vm.captureMode}"
+                android:orientation="vertical"
+                android:visibility="gone"
+                app:highlight='@{!vm.captureMode &amp;&amp; vm.firstChoice == "2"}'>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:src="@drawable/ic_label_circle" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:tag="subtitle"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:captureMode='@{vm.captureMode}'
+                    app:captureText='@{vm.numSamples["2"]}'
+                    app:categoryId="@{2}"
+                    app:inferenceText='@{vm.confidence["2"]}' />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/class_btn_3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".25"
+                android:clickable="@{vm.captureMode}"
+                android:enabled="@{vm.captureMode}"
+                android:orientation="vertical"
+                android:visibility="gone"
+                app:highlight='@{!vm.captureMode &amp;&amp; vm.firstChoice == "3"}'>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:src="@drawable/ic_label_x" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:tag="subtitle"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:captureMode='@{vm.captureMode}'
+                    app:captureText='@{vm.numSamples["3"]}'
+                    app:categoryId="@{3}"
+                    app:inferenceText='@{vm.confidence["3"]}' />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/class_btn_4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".25"
+                android:clickable="@{vm.captureMode}"
+                android:enabled="@{vm.captureMode}"
+                android:orientation="vertical"
+                app:highlight='@{!vm.captureMode &amp;&amp; vm.firstChoice == "4"}'>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Unidentified" />
+
+                <!--                <ImageView-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_margin="8dp"-->
+                <!--                    android:src="@drawable/ic_label_square" />-->
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:tag="subtitle"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:captureMode='@{vm.captureMode}'
+                    app:captureText='@{vm.numSamples["4"]}'
+                    app:categoryId="@{4}"
+                    app:inferenceText='@{vm.confidence["4"] * 100f}' />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

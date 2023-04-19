@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.textfield.TextInputLayout
+        tools:hint="PASSWORD"
+        tools:helperText="must be a valid password"
+        app:startIconDrawable="@drawable/icons8_lock_24"
+        app:startIconTint="@color/white"
+        app:endIconDrawable="@drawable/password_selector"
+        app:endIconTint="@color/white"
+        android:background="@drawable/textfield"
+        android:id="@+id/input_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:passwordToggleEnabled="true"
+        app:boxBackgroundColor="?colorPrimaryVariant"
+        app:boxCornerRadiusBottomEnd="18dp"
+        app:boxCornerRadiusBottomStart="18dp"
+        app:boxCornerRadiusTopEnd="18dp"
+        app:boxCornerRadiusTopStart="18dp"
+        app:boxStrokeColor="#0000"
+        app:boxStrokeWidth="0dp"
+        android:focusable="true"
+        app:boxStrokeWidthFocused="1dp"
+        android:textColorHint="#cccccc"
+        app:helperTextTextColor="#2d7a7f">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/input_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="?colorOnPrimary"
+            android:lines="1" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+</RelativeLayout>
